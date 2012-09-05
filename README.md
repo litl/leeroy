@@ -3,10 +3,10 @@
 Leeroy is a Python [Flask](http://flask.pocoo.org) service which
 integrates Jenkins with GitHub pull requests.  Leeroy uses [GitHub
 hooks](http://developer.github.com/v3/repos/hooks/) to listen for pull
-request notifications and starts builds on your Jenkins server.  Using the
+request notifications and starts jobs on your Jenkins server.  Using the
 Jenkins [notification plugin][jnp], Leeroy updates the pull request using
 GitHub's [status API](http://developer.github.com/v3/repos/statuses/)
-with pending, success, failure, or error information.
+with pending, success, failure, or error statuses.
 
 ## Installation
 
@@ -18,8 +18,8 @@ Install the package using pip:
 
 Leeroy needs to be configured to point to your GitHub repositories,
 to your Jenkins server and its jobs.  Leeroy will attempt to automatically
-install the GitHub hook for you automatically.  You will also need to
-configure your Jenkins jobs.
+install the GitHub hook for you.  You will also need to configure your
+Jenkins jobs to pull the right repositories and commits.
 
 ### Leeroy Configuration
 
@@ -76,14 +76,15 @@ REPOSITORIES = [
 
 1. Install the Jenkins [git plugin][jgp] and [notification plugin][jnp].
 
-2. Create a Jenkins job.  Under "Job Notifications", set a Notification Endpoint
-with protocol HTTP and the URL pointing to `/notification/jenkins` on your Leeroy
-server.  If your Leeroy server is `leeroy.example.com`, set this to
-`http://leeroy.example.com/notification/jenkins`.
+2. Create a Jenkins job.  Under "Job Notifications", set a Notification 
+Endpoint with protocol HTTP and the URL pointing to `/notification/jenkins`
+on your Leeroy server.  If your Leeroy server is `leeroy.example.com`, set
+this to `http://leeroy.example.com/notification/jenkins`.
 
-3. Check the "This build is parameterized" checkbox, and add 3 string parameters:
-`GIT_REPO`, `GIT_SHA1`, and `GITHUB_URL`.  Default values pointing to your repo
-for `GIT_REPO` and `master` for `GIT_SHA1` are a good default, but not required.
+3. Check the "This build is parameterized" checkbox, and add 3 string
+parameters: `GIT_REPO`, `GIT_SHA1`, and `GITHUB_URL`.  Default values
+like `username/repo` for `GIT_REPO` and `master` for `GIT_SHA1` are a
+good idea, but not required.
 
 4. Under "Source Code Management", select Git.  Set the "Repository URL" to
 `git@github.com:$GIT_REPO.git`.  Set "Branch Specifier" to `$GIT_SHA1`.
@@ -105,9 +106,9 @@ checking the Leeroy logs.
 
 Submit a pull request for one of your watched GitHub repositories.  You
 should shortly see a build scheduled for its corresponding Jenkins job.
-Shortly after that, you should see a "pending" status on the pull request.
-Once the build finishes, you should see either a "success" or "failure"
-status on your pull request.  Congratulations!
+Soon after that, you should see a "pending" status on the pull request
+in GitHub.  Once the build finishes, you should see either a "success"
+or "failure" status on your pull request.  Congratulations!
 
 If you want to run Leeroy in a more production-ready environment then any
 WSGI app server should work.  We are fans of
@@ -139,7 +140,7 @@ other CI services fairly easily in the future.
 
 ### What's with the name Leeroy?
 
-[Leeroy Jenkins on Wikipedia](http://en.wikipedia.org/wiki/Leeroy_Jenkins)
+[Know your meme.](http://knowyourmeme.com/memes/leeroy-jenkins)
 
 ## Copyright and License
 
