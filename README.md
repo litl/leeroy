@@ -91,7 +91,7 @@ for `GIT_REPO` and `master` for `GIT_SHA1` are a good default, but not required.
 5. Configure the rest of the job however you would otherwise.
 
 [jgp]: https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin
-[jnp]: https://wiki.jenkins-ci.org/display/JENKINS/Notification+Plugin)
+[jnp]: https://wiki.jenkins-ci.org/display/JENKINS/Notification+Plugin
 
 ## Running Leeroy
 
