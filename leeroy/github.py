@@ -80,6 +80,9 @@ def register_github_hooks(app):
 
         found_hook = False
         for hook in response.json:
+            if hook["config"]["name"] != "web":
+                continue
+
             if hook['config']['url'] == github_endpoint:
                 found_hook = True
                 break
