@@ -31,6 +31,7 @@ setup(
 [console_scripts]
 leeroy=leeroy.scripts:main
     """,
+    packages=["leeroy"],
     classifiers=[
         # From http://pypi.python.org/pypi?%3Aaction=list_classifiers
         #"Development Status :: 1 - Planning",
