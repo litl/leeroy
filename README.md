@@ -76,18 +76,18 @@ REPOSITORIES = [
 
 1. Install the Jenkins [git plugin][jgp] and [notification plugin][jnp].
 
-2. Create a Jenkins job.  Under "Job Notifications", set a Notification 
+2. Create a Jenkins job.  Under "Job Notifications", set a Notification
 Endpoint with protocol HTTP and the URL pointing to `/notification/jenkins`
 on your Leeroy server.  If your Leeroy server is `leeroy.example.com`, set
 this to `http://leeroy.example.com/notification/jenkins`.
 
-3. Check the "This build is parameterized" checkbox, and add 3 string
-parameters: `GIT_REPO`, `GIT_SHA1`, and `GITHUB_URL`.  Default values
-like `username/repo` for `GIT_REPO` and `master` for `GIT_SHA1` are a
-good idea, but not required.
+3. Check the "This build is parameterized" checkbox, and add 4 string
+parameters: `GIT_BASE_REPO`, `GIT_HEAD_REPO`, `GIT_SHA1`, and `GITHUB_URL`.
+Default values like `username/repo` for `GIT_BASE_REPO` and `GIT_HEAD_REPO`,
+and `master` for `GIT_SHA1` are a good idea, but not required.
 
 4. Under "Source Code Management", select Git.  Set the "Repository URL" to
-`git@github.com:$GIT_REPO.git`.  Set "Branch Specifier" to `$GIT_SHA1`.
+`git@github.com:$GIT_HEAD_REPO.git`.  Set "Branch Specifier" to `$GIT_SHA1`.
 
 5. Configure the rest of the job however you would otherwise.
 

@@ -37,17 +37,24 @@ def jenkins_notification():
     jenkins_name = data["name"]
     jenkins_number = data["build"]["number"]
     jenkins_url = data["build"]["full_url"]
-
-    logging.debug("Received Jenkins notification for %s %s (%s)",
-                  jenkins_name, jenkins_number, jenkins_url)
-
     phase = data["build"]["phase"]
+
+    logging.debug("Received Jenkins notification for %s %s (%s): %s",
+                  jenkins_name, jenkins_number, jenkins_url, phase)
 
     if phase not in ("STARTED", "COMPLETED"):
         return Response(status=204)
 
-    github_repo = data["build"]["parameters"]["GIT_REPO"]
-    github_sha1 = data["build"]["parameters"]["GIT_SHA1"]
+    git_base_repo = data["build"]["parameters"]["GIT_BASE_REPO"]
+    git_head_repo = data["build"]["parameters"]["GIT_HEAD_REPO"]
+    git_sha1 = data["build"]["parameters"]["GIT_SHA1"]
+
+    repo_config = github.get_repo_config(current_app, git_base_repo)
+
+    if repo_config is None:
+        err_msg = "No repo config for {0}".format(git_base_repo)
+        logging.warn(err_msg)
+        raise NotFound(err_msg)
 
     desc_prefix = "Jenkins build '{0}' #{1}".format(jenkins_name,
                                                     jenkins_number)
@@ -68,19 +75,12 @@ def jenkins_notification():
             github_state = "error"
             github_desc = desc_prefix + " has encountered an error"
 
-    repo_config = github.get_repo_config(current_app, github_repo)
-
-    if repo_config is None:
-        err_msg = "No repo config for {0}".format(github_repo)
-        logging.warn(err_msg)
-        raise NotFound(err_msg)
-
     logging.debug(github_desc)
 
     github.update_status(current_app,
                          repo_config,
-                         github_repo,
-                         github_sha1,
+                         git_head_repo,
+                         git_sha1,
                          github_state,
                          github_desc,
                          jenkins_url)
@@ -90,15 +90,15 @@ def jenkins_notification():
 
 @base.route("/notification/github", methods=["POST"])
 def github_notification():
+    action = request.json["action"]
     pull_request = request.json["pull_request"]
     number = pull_request["number"]
     html_url = pull_request["html_url"]
     base_repo_name = github.get_repo_name(pull_request, "base")
 
-    logging.debug("Received GitHub pull request notification for %s %s (%s)",
-                  base_repo_name, number, html_url)
-
-    action = request.json["action"]
+    logging.debug("Received GitHub pull request notification for "
+                  "%s %s (%s): %s",
+                  base_repo_name, number, html_url, action)
 
     if action not in ("opened", "synchronize"):
         return Response(status=204)
