@@ -79,7 +79,7 @@ def jenkins_notification():
 
     github.update_status(current_app,
                          repo_config,
-                         git_head_repo,
+                         git_base_repo,
                          git_sha1,
                          github_state,
                          github_desc,
