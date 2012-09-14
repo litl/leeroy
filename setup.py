@@ -2,7 +2,7 @@ import os
 import sys
 from setuptools import setup, find_packages
 
-VERSION = "0.1.2"
+VERSION = "0.1.3"
 
 def get_requirements():
     basedir = os.path.dirname(__file__)
