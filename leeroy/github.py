@@ -48,12 +48,16 @@ def get_commits(app, repo_config, pull_request):
         return head_repo_name, [pull_request["head"]["sha"]]
 
 
-def update_status(app, repo_config, repo_name, sha, state, desc, target_url):
+def update_status(app, repo_config, repo_name, sha, state, desc,
+                  target_url=None):
     url = github_status_url.format(repo_name=repo_name,
                                    sha=sha)
     params = dict(state=state,
-                  description=desc,
-                  target_url=target_url)
+                  description=desc)
+
+    if target_url:
+        params["target_url"] = target_url
+
     headers = {"Content-Type": "application/json"}
 
     logging.debug("Setting status on %s %s to %s", repo_name, sha, state)

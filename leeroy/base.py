@@ -46,7 +46,6 @@ def jenkins_notification():
         return Response(status=204)
 
     git_base_repo = data["build"]["parameters"]["GIT_BASE_REPO"]
-    git_head_repo = data["build"]["parameters"]["GIT_HEAD_REPO"]
     git_sha1 = data["build"]["parameters"]["GIT_SHA1"]
 
     repo_config = github.get_repo_config(current_app, git_base_repo)
@@ -113,11 +112,19 @@ def github_notification():
     head_repo_name, shas = github.get_commits(current_app,
                                               repo_config,
                                               pull_request)
+
     logging.debug("Trigging builds for %d commits", len(shas))
 
     html_url = pull_request["html_url"]
 
     for sha in shas:
+        github.update_status(current_app,
+                             repo_config,
+                             base_repo_name,
+                             sha,
+                             "pending",
+                             "Jenkins build is being scheduled")
+
         logging.debug("Scheduling build for %s %s", head_repo_name, sha)
         jenkins.schedule_build(current_app,
                                repo_config,
