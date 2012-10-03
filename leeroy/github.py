@@ -70,7 +70,9 @@ def update_status(app, repo_config, repo_name, sha, state, desc,
 
 def register_github_hooks(app):
     with app.app_context():
-        github_endpoint = url_for("base.github_notification", _external=True)
+        github_endpoint = "http://%s%s" % (
+                app.config["GITHUB_NOTIFICATION_SERVER_NAME"],
+                url_for("base.github_notification", _external=False))
 
     for repo_config in app.config["REPOSITORIES"]:
         repo_name = repo_config["github_repo"]
@@ -78,8 +80,10 @@ def register_github_hooks(app):
         response = requests.get(url, auth=get_github_auth(app, repo_config))
 
         if not response.ok:
-            logging.warn("Unable to install GitHub hook for repo %s: %s %s",
-                         repo_name, response.status_code, response.reason)
+            logging.warn("Unable to install GitHub hook for repo %s "
+                         "with url %s: %s %s",
+                         repo_name, github_endpoint, response.status_code,
+                         response.reason)
             continue
 
         found_hook = False
