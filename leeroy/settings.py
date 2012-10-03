@@ -2,9 +2,13 @@ DEBUG = True
 LOGGING_CONF = "logging.conf"
 LOGGER_NAME = "leeroy"
 
-# The hostname (and :port, if necessary) of this server, used for
-# the GitHub hook
+# The hostname (and :port, if necessary) of this server
 SERVER_NAME = "leeroy.example.com"
+
+# The hostname (and :port, if necessary) of the server GitHub should send
+# notification to. It can be different from SERVER_NAME when another server is
+# proxying requests to leeroy.
+GITHUB_NOTIFICATION_SERVER_NAME = SERVER_NAME
 
 # GitHub configuration
 GITHUB_USER = "octocat"
