@@ -2,7 +2,7 @@
 
 import logging
 
-from flask import Blueprint, current_app, json, request, Response
+from flask import Blueprint, current_app, json, request, Response, abort
 from werkzeug.exceptions import NotFound
 
 from . import github, jenkins
@@ -67,12 +67,16 @@ def jenkins_notification():
         if status == "SUCCESS":
             github_state = "success"
             github_desc = desc_prefix + " has succeeded"
-        elif status == "FAILURE":
+        elif status == "FAILURE" or status == "UNSTABLE":
             github_state = "failure"
             github_desc = desc_prefix + " has failed"
         elif status == "ABORTED":
             github_state = "error"
             github_desc = desc_prefix + " has encountered an error"
+        else:
+            logging.debug("Did not understand '%s' build status. Aborting.",
+                    status)
+            abort()
 
     logging.debug(github_desc)
 
@@ -100,6 +104,7 @@ def github_notification():
                   base_repo_name, number, html_url, action)
 
     if action not in ("opened", "synchronize"):
+        logging.debug("Ignored '%s' action." % action)
         return Response(status=204)
 
     repo_config = github.get_repo_config(current_app, base_repo_name)
