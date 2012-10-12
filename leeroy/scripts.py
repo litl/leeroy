@@ -19,6 +19,10 @@ def main():
                       action="store", type="string", dest="host",
                       default="0.0.0.0",
                       help="specify the address on which to listen")
+    parser.add_option("-p", "--port",
+                      action="store", type="int", dest="port",
+                      default=5000,
+                      help="specify the port number on which to run")
 
     (options, args) = parser.parse_args()
 
@@ -38,7 +42,7 @@ def main():
         sys.exit(0)
 
     app.debug = options.debug
-    app.run(host=options.host)
+    app.run(host=options.host, port=options.port)
 
 
 if __name__ == '__main__':
