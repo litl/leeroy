@@ -80,7 +80,7 @@ def register_github_hooks(app):
         response = requests.get(url, auth=get_github_auth(app, repo_config))
 
         if not response.ok:
-            logging.warn("Unable to install GitHub hook for repo %s "
+            logging.warn("Unable to look up GitHub hooks for repo %s "
                          "with url %s: %s %s",
                          repo_name, github_endpoint, response.status_code,
                          response.reason)
