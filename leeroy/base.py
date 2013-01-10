@@ -3,7 +3,7 @@
 import logging
 
 from flask import Blueprint, current_app, json, request, Response, abort
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, Forbidden
 
 from . import github, jenkins
 
@@ -93,6 +93,10 @@ def jenkins_notification():
 
 @base.route("/notification/github", methods=["POST"])
 def github_notification():
+    whitelist = current_app.config.get("WEBHOOK_ADDRESS_WHITELIST")
+    if whitelist and not request.remote_addr in whitelist:
+        raise Forbidden("Webhook address not in whitelist")
+
     action = request.json["action"]
     pull_request = request.json["pull_request"]
     number = pull_request["number"]

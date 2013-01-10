@@ -23,6 +23,16 @@ JENKINS_PASSWORD = ""
 # or only one for the last one.
 BUILD_ALL_COMMITS = True
 
+# Only accept Webhook POST requests that originate from these addresses. Set
+# to something falsy to disable whitelisting.
+WEBHOOK_ADDRESS_WHITELIST = [
+    "127.0.0.1",
+    # GitHub
+    "207.97.227.253",
+    "50.57.128.197",
+    "108.171.174.178"
+]
+
 # A list of dicts containing configuration for each GitHub repository &
 # Jenkins job pair you want to join together.
 #
