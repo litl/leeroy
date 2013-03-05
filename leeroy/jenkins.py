@@ -1,5 +1,6 @@
 # Copyright 2012 litl, LLC.  Licensed under the MIT license.
 
+import logging
 import requests
 
 build_path = "/job/{job_name}/buildWithParameters"\
@@ -29,4 +30,7 @@ def schedule_build(app, repo_config, head_repo_name, sha, html_url):
                           git_sha1=sha,
                           github_url=html_url)
 
-    requests.get(url, auth=get_jenkins_auth(app, repo_config))
+    logging.debug("Requesting build from Jenkins: %s", url)
+    response = requests.post(url, auth=get_jenkins_auth(app, repo_config))
+    logging.debug("Jenkins responded with status code %s",
+                  response.status_code)
