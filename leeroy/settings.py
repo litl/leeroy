@@ -7,8 +7,8 @@ SERVER_NAME = "leeroy.example.com"
 
 # The hostname (and :port, if necessary) of the server GitHub should send
 # notification to. It can be different from SERVER_NAME when another server is
-# proxying requests to leeroy.
-GITHUB_NOTIFICATION_SERVER_NAME = SERVER_NAME
+# proxying requests to leeroy.  Falls back to SERVER_NAME if not provided.
+# GITHUB_NOTIFICATION_SERVER_NAME = "leeroy.example.com"
 
 # GitHub configuration
 GITHUB_USER = "octocat"

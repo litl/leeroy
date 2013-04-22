@@ -71,7 +71,8 @@ def update_status(app, repo_config, repo_name, sha, state, desc,
 def register_github_hooks(app):
     with app.app_context():
         github_endpoint = "http://%s%s" % (
-                app.config["GITHUB_NOTIFICATION_SERVER_NAME"],
+                app.config.get("GITHUB_NOTIFICATION_SERVER_NAME",
+                               app.config["SERVER_NAME"]),
                 url_for("base.github_notification", _external=False))
 
     for repo_config in app.config["REPOSITORIES"]:
@@ -108,7 +109,7 @@ def register_github_hooks(app):
                                      headers=headers)
 
             if response.ok:
-                logging.info("Registered github hook for %s", repo_name)
+                logging.info("Registered github hook for %s: %s", repo_name, github_endpoint)
             else:
                 logging.error("Unable to register github hook for %s: %s",
                               repo_name, response.status_code)
