@@ -109,7 +109,8 @@ def register_github_hooks(app):
                                      headers=headers)
 
             if response.ok:
-                logging.info("Registered github hook for %s: %s", repo_name, github_endpoint)
+                logging.info("Registered github hook for %s: %s",
+                             repo_name, github_endpoint)
             else:
                 logging.error("Unable to register github hook for %s: %s",
                               repo_name, response.status_code)
