@@ -37,11 +37,18 @@ LOGGER_NAME = "leeroy"
 # the GitHub hook
 SERVER_NAME = "leeroy.example.com"
 
+# The hostname (and :port, if necessary) of the server GitHub should send
+# notification to. It can be different from SERVER_NAME when another server is
+# proxying requests to leeroy.  Falls back to SERVER_NAME if not provided.
+# GITHUB_NOTIFICATION_SERVER_NAME = "leeroy.example.com"
+
 # GitHub configuration
 GITHUB_USER = "octocat"
 GITHUB_PASSWORD = ""
 
 # Jenkins configuration
+# JENKINS_USER and JENKINS_PASSWORD assume you're using basic HTTP
+# authentication, not Jenkins's built in auth system.
 JENKINS_URL = "https://jenkins.example.com"
 JENKINS_USER = "hudson"
 JENKINS_PASSWORD = ""
