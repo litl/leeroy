@@ -15,6 +15,8 @@ GITHUB_USER = "octocat"
 GITHUB_PASSWORD = ""
 
 # Jenkins configuration
+# JENKINS_USER and JENKINS_PASSWORD assume you're using basic HTTP
+# authentication, not Jenkins's built in auth system.
 JENKINS_URL = "https://jenkins.example.com"
 JENKINS_USER = "hudson"
 JENKINS_PASSWORD = ""
