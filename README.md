@@ -33,8 +33,7 @@ DEBUG = True
 LOGGING_CONF = "logging.conf"
 LOGGER_NAME = "leeroy"
 
-# The hostname (and :port, if necessary) of this server, used for
-# the GitHub hook
+# The hostname (and :port, if necessary) of this server
 SERVER_NAME = "leeroy.example.com"
 
 # The hostname (and :port, if necessary) of the server GitHub should send
@@ -43,8 +42,19 @@ SERVER_NAME = "leeroy.example.com"
 # GITHUB_NOTIFICATION_SERVER_NAME = "leeroy.example.com"
 
 # GitHub configuration
-GITHUB_USER = "octocat"
-GITHUB_PASSWORD = ""
+# The base URL for GitHub's API. If using GitHub Enterprise, change this to
+# https://servername/api/v3
+# GITHUB_API_BASE = "https://github.example.com/api/v3"
+GITHUB_API_BASE = "https://api.github.com"
+
+# Verify SSL certificate. Always set this to True unless using GitHub
+# Enterprise with a self signed certificate.
+GITHUB_VERIFY = True
+
+# Create and use a GitHub API token or supply a user and password.
+GITHUB_TOKEN = ""
+# GITHUB_USER = "octocat"
+# GITHUB_PASSWORD = ""
 
 # Jenkins configuration
 # JENKINS_USER and JENKINS_PASSWORD assume you're using basic HTTP
@@ -64,19 +74,22 @@ BUILD_ALL_COMMITS = True
 #
 # {"github_repo": "litl/leeroy",
 #  "jenkins_job_name": "leeroy-github",
+#  "github_api_base": "https://github.example.com/api/v3",
+#  "github_token": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
 #  "github_user": "litl",
 #  "github_password": "password",
 #  "jenkins_user": "litl",
 #  "jenkins_password": "password",
 #  "build_all_commits": False}
 #
-# github_user, github_password, jenkins_user, jenkins_password, and
-# build_all_commits are optional.  If not present, they'll pull from
-# the toplevel configuration options (GITHUB_USER, etc.)
+# github_api_base, github_token, github_user, github_password, jenkins_user,
+# jenkins_password, and build_all_commits are optional.  If not present,
+# they'll pull from the toplevel configuration options (GITHUB_USER, etc.)
 REPOSITORIES = [
     {"github_repo": "litl/leeroy",
      "jenkins_job_name": "leeroy-github"}
 ]
+
 ```
 
 ### Jenkins Configuration

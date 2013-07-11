@@ -5,11 +5,20 @@ from flask import json, url_for
 import logging
 import requests
 
-github_base = "https://api.github.com"
-github_status_url = github_base + "/repos/{repo_name}/statuses/{sha}"
-github_hooks_url = github_base + "/repos/{repo_name}/hooks"
-github_commits_url = \
-    github_base + "/repos/{repo_name}/pulls/{number}/commits"
+github_status_url = "/repos/{repo_name}/statuses/{sha}"
+github_hooks_url = "/repos/{repo_name}/hooks"
+github_commits_url = "/repos/{repo_name}/pulls/{number}/commits"
+
+# Use requests.Session() objects keyed by github_repo to handle GitHub API
+# authentication details (token vs user/pass) and SSL trust options.
+request_sessions = {}
+
+
+def get_api_url(app, repo_config, url):
+    base_url = repo_config.get("github_api_base",
+            app.config["GITHUB_API_BASE"])
+
+    return base_url + url
 
 
 def get_repo_name(pull_request, key):
@@ -22,13 +31,25 @@ def get_repo_config(app, repo_name):
             return repo_config
 
 
-def get_github_auth(app, repo_config):
-    user = repo_config.get("github_user",
-                           app.config["GITHUB_USER"])
-    password = repo_config.get("github_password",
-                               app.config["GITHUB_PASSWORD"])
+def get_session_for_repo(app, repo_config):
+    session = request_sessions.get(repo_config["github_repo"])
+    if session is None:
+        session = requests.Session()
+        session.verify = repo_config.get("github_verify",
+            app.config["GITHUB_VERIFY"])
 
-    return user, password
+        token = repo_config.get("github_token",
+            app.config["GITHUB_TOKEN"])
+
+        if token:
+            session.headers = {"Authorization": "token " + token}
+        else:
+            user = repo_config.get("github_user",
+                app.config["GITHUB_USER"])
+            password = repo_config.get("github_password",
+                app.config["GITHUB_PASSWORD"])
+            session.auth = (user, password)
+    return session
 
 
 def get_commits(app, repo_config, pull_request):
@@ -39,10 +60,14 @@ def get_commits(app, repo_config, pull_request):
         number = pull_request["number"]
 
         base_repo_name = get_repo_name(pull_request, "base")
-        url = github_commits_url.format(repo_name=base_repo_name,
-                                        number=number)
 
-        response = requests.get(url, auth=get_github_auth(app, repo_config))
+        url = get_api_url(app, repo_config, github_commits_url).format(
+            repo_name=base_repo_name,
+            number=number)
+
+        s = get_session_for_repo(app, repo_config)
+        response = s.get(url)
+
         return head_repo_name, [c["sha"] for c in response.json]
     else:
         return head_repo_name, [pull_request["head"]["sha"]]
@@ -50,8 +75,10 @@ def get_commits(app, repo_config, pull_request):
 
 def update_status(app, repo_config, repo_name, sha, state, desc,
                   target_url=None):
-    url = github_status_url.format(repo_name=repo_name,
-                                   sha=sha)
+    url = get_api_url(app, repo_config, github_status_url).format(
+        repo_name=repo_name,
+        sha=sha)
+
     params = dict(state=state,
                   description=desc)
 
@@ -62,10 +89,8 @@ def update_status(app, repo_config, repo_name, sha, state, desc,
 
     logging.debug("Setting status on %s %s to %s", repo_name, sha, state)
 
-    requests.post(url,
-                  auth=get_github_auth(app, repo_config),
-                  data=json.dumps(params),
-                  headers=headers)
+    s = get_session_for_repo(app, repo_config)
+    s.post(url, data=json.dumps(params), headers=headers)
 
 
 def register_github_hooks(app):
@@ -77,8 +102,11 @@ def register_github_hooks(app):
 
     for repo_config in app.config["REPOSITORIES"]:
         repo_name = repo_config["github_repo"]
-        url = github_hooks_url.format(repo_name=repo_name)
-        response = requests.get(url, auth=get_github_auth(app, repo_config))
+        url = get_api_url(app, repo_config, github_hooks_url).format(
+            repo_name=repo_name)
+
+        s = get_session_for_repo(app, repo_config)
+        response = s.get(url)
 
         if not response.ok:
             logging.warn("Unable to look up GitHub hooks for repo %s "
@@ -103,10 +131,7 @@ def register_github_hooks(app):
                        "events": ["pull_request"]}
             headers = {"Content-Type": "application/json"}
 
-            response = requests.post(url,
-                                     auth=get_github_auth(app, repo_config),
-                                     data=json.dumps(params),
-                                     headers=headers)
+            response = s.post(url, data=json.dumps(params), headers=headers)
 
             if response.ok:
                 logging.info("Registered github hook for %s: %s",
