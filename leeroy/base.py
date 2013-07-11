@@ -103,7 +103,7 @@ def github_notification():
                   "%s %s (%s): %s",
                   base_repo_name, number, html_url, action)
 
-    if action not in ("opened", "synchronize"):
+    if action not in ("opened", "reopened", "synchronize"):
         logging.debug("Ignored '%s' action." % action)
         return Response(status=204)
 
