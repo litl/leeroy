@@ -39,15 +39,15 @@ def get_session_for_repo(app, repo_config):
             app.config["GITHUB_VERIFY"])
 
         token = repo_config.get("github_token",
-            app.config["GITHUB_TOKEN"])
+            app.config.get("GITHUB_TOKEN"))
 
         if token:
             session.headers = {"Authorization": "token " + token}
         else:
             user = repo_config.get("github_user",
-                app.config["GITHUB_USER"])
+                app.config.get("GITHUB_USER"))
             password = repo_config.get("github_password",
-                app.config["GITHUB_PASSWORD"])
+                app.config.get("GITHUB_PASSWORD"))
             session.auth = (user, password)
     return session
 
