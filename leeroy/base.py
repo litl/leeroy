@@ -27,7 +27,7 @@ def _parse_jenkins_json(request):
             # Seems bad that there's only 1 key, but press on
             return request.form
     else:
-        return request.form
+        return request.json
 
 
 @base.route("/notification/jenkins", methods=["POST"])
