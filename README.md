@@ -78,18 +78,19 @@ BUILD_ALL_COMMITS = True
 #  "github_token": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
 #  "github_user": "litl",
 #  "github_password": "password",
+#  "jenkins_url": ""https://jenkins2.example.com"",
 #  "jenkins_user": "litl",
 #  "jenkins_password": "password",
 #  "build_all_commits": False}
 #
-# github_api_base, github_token, github_user, github_password, jenkins_user,
-# jenkins_password, and build_all_commits are optional.  If not present,
-# they'll pull from the toplevel configuration options (GITHUB_USER, etc.)
+# github_api_base, github_token, github_user, github_password, jenkins_url,
+# jenkins_user, jenkins_password, and build_all_commits are optional.  If not
+# present, they'll pull from the toplevel configuration options (GITHUB_USER,
+# etc.)
 REPOSITORIES = [
     {"github_repo": "litl/leeroy",
      "jenkins_job_name": "leeroy-github"}
 ]
-
 ```
 
 ### Jenkins Configuration
