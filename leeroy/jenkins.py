@@ -19,11 +19,15 @@ def get_jenkins_auth(app, repo_config):
     return user, password
 
 
+def get_jenkins_url(app, repo_config):
+    return repo_config.get("jenkins_url", app.config["JENKINS_URL"])
+
+
 def schedule_build(app, repo_config, head_repo_name, sha, html_url):
     base_repo_name = repo_config["github_repo"]
     job_name = repo_config["jenkins_job_name"]
 
-    url = app.config["JENKINS_URL"] + \
+    url = get_jenkins_url(app, repo_config) + \
         build_path.format(job_name=job_name,
                           git_base_repo=base_repo_name,
                           git_head_repo=head_repo_name,
