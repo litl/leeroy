@@ -69,8 +69,7 @@ def get_commits(app, repo_config, pull_request):
         response = s.get(url)
 
         return head_repo_name, [c["sha"] for c in response.json]
-    else:
-        return head_repo_name, [pull_request["head"]["sha"]]
+    return head_repo_name, [pull_request["head"]["sha"]]
 
 
 def update_status(app, repo_config, repo_name, sha, state, desc,
