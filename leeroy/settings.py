@@ -34,7 +34,11 @@ JENKINS_PASSWORD = ""
 
 # Whether a Jenkins job is created for each commit in a pull request,
 # or only one for the last one.
-BUILD_ALL_COMMITS = True
+# What commits to build in a pull request. There are three options:
+# 'ALL': build all commits in the pull request.
+# 'LAST': build only the last commit in the pull request.
+# 'NEW': build only commits that don't already have a commit status set. (default)
+BUILD_COMMITS = 'NEW'
 
 # A list of dicts containing configuration for each GitHub repository &
 # Jenkins job pair you want to join together.
@@ -50,10 +54,10 @@ BUILD_ALL_COMMITS = True
 #  "jenkins_url": ""https://jenkins2.example.com"",
 #  "jenkins_user": "litl",
 #  "jenkins_password": "password",
-#  "build_all_commits": False}
+#  "build_commits": "LAST"}
 #
 # github_api_base, github_token, github_user, github_password, jenkins_url,
-# jenkins_user, jenkins_password, and build_all_commits are optional.  If not
+# jenkins_user, jenkins_password, and build_commits are optional.  If not
 # present, they'll pull from the toplevel configuration options (GITHUB_USER,
 # etc.)
 REPOSITORIES = [
