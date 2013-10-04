@@ -35,6 +35,6 @@ def schedule_build(app, repo_config, head_repo_name, sha, html_url):
                           github_url=html_url)
 
     logging.debug("Requesting build from Jenkins: %s", url)
-    response = requests.post(url, auth=get_jenkins_auth(app, repo_config))
+    response = requests.get(url, auth=get_jenkins_auth(app, repo_config))
     logging.debug("Jenkins responded with status code %s",
                   response.status_code)
