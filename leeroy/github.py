@@ -26,6 +26,13 @@ def get_api_url(app, repo_config, url):
     return base_url + url
 
 
+def get_api_response(app, repo_config, url):
+    url = get_api_url(app, repo_config, url).format(
+        repo_name=repo_config.get('github_repo'))
+    s = get_session_for_repo(app, repo_config)
+    return s.get(url)
+
+
 def get_repo_name(pull_request, key):
     return pull_request[key]["repo"]["full_name"]
 
@@ -130,15 +137,29 @@ def update_status(app, repo_config, repo_name, sha, state, desc,
     s.post(url, data=json.dumps(params), headers=headers)
 
 
-def has_status(app, repo_config, repo_name, sha):
+def get_status(app, repo_config, repo_name, sha):
+    """Gets the status of a commit.
+
+    .. note::
+        ``repo_name`` might not ever be anything other than
+        ``repo_config['github_repo']``.
+
+    :param app: Flask app for leeroy
+    :param repo_config: configuration for the repo
+    :param repo_name: The name of the owner/repo
+    :param sha: SHA for the status we are looking for
+    :return: returns json response of status
+    """
     url = get_api_url(app, repo_config, github_status_url).format(
-        repo_name=repo_name,
-        sha=sha)
-
+        repo_name=repo_name, sha=sha)
     logging.debug("Getting status for %s %s", repo_name, sha)
-
     s = get_session_for_repo(app, repo_config)
     response = s.get(url)
+    return response
+
+
+def has_status(app, repo_config, repo_name, sha):
+    response = get_status(app, repo_config, repo_name, sha)
 
     # The GitHub commit status API returns a JSON list, so `len()` checks
     # whether any statuses are set for the commit.
@@ -191,3 +212,16 @@ def register_github_hooks(app):
             else:
                 logging.error("Unable to register github hook for %s: %s",
                               repo_name, response.status_code)
+
+
+def get_pull_requests(app, repo_config):
+    """Iterator of last 30 pull requests from a repository.
+
+    :param app: Flask app
+    :param repo_config: dict with ``github_repo`` key
+
+    :yields: id for a pull request
+    """
+    response = get_api_response(app, repo_config, "/repos/{repo_name}/pulls")
+    return (item for item in response.json)
+

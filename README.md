@@ -139,6 +139,16 @@ If you want to run Leeroy in a more production-ready environment then any
 WSGI app server should work.  We are fans of
 [uwsgi](http://projects.unbit.it/uwsgi/).
 
+## Cron task to fix missing statuses
+
+Sometimes Github doesn't fire a hook, or Jenkins forgets to build a job.  You
+can take care of this wonderful edge-case by running the following in a
+cron-task:
+
+    $ leeroy-cron
+
+You can add it to your crontab to run at whatever interval suits you.
+
 ## Contribution
 
 Contributions are welcome!  Here's the best way to do that:
