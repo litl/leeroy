@@ -31,6 +31,7 @@ setup(
     entry_points="""\
 [console_scripts]
 leeroy=leeroy.scripts:main
+leeroy-cron=leeroy.cron:main
     """,
     packages=["leeroy"],
     classifiers=[
