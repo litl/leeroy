@@ -4,6 +4,7 @@ from setuptools import setup, find_packages
 
 VERSION = "0.1.5"
 
+
 def get_requirements():
     basedir = os.path.dirname(__file__)
     with open(os.path.join(basedir, 'requirements.txt')) as f:
@@ -30,14 +31,12 @@ setup(
     entry_points="""\
 [console_scripts]
 leeroy=leeroy.scripts:main
+leeroy-cron=leeroy.cron:main
     """,
     packages=["leeroy"],
     classifiers=[
         # From http://pypi.python.org/pypi?%3Aaction=list_classifiers
-        #"Development Status :: 1 - Planning",
-        #"Development Status :: 2 - Pre-Alpha",
-        "Development Status :: 3 - Alpha",
-        #"Development Status :: 4 - Beta",
+        "Development Status :: 4 - Beta",
         #"Development Status :: 5 - Production/Stable",
         #"Development Status :: 6 - Mature",
         #"Development Status :: 7 - Inactive",
