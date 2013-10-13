@@ -75,7 +75,7 @@ def jenkins_notification():
             github_desc = desc_prefix + " has encountered an error"
         else:
             logging.debug("Did not understand '%s' build status. Aborting.",
-                    status)
+                          status)
             abort()
 
     logging.debug(github_desc)
