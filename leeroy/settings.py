@@ -37,7 +37,8 @@ JENKINS_PASSWORD = ""
 # What commits to build in a pull request. There are three options:
 # 'ALL': build all commits in the pull request.
 # 'LAST': build only the last commit in the pull request.
-# 'NEW': build only commits that don't already have a commit status set. (default)
+# 'NEW': build only commits that don't already have a commit status set.
+#        (default)
 BUILD_COMMITS = 'NEW'
 
 # A list of dicts containing configuration for each GitHub repository &

@@ -21,7 +21,7 @@ BUILD_COMMITS_NEW = "NEW"
 
 def get_api_url(app, repo_config, url):
     base_url = repo_config.get("github_api_base",
-            app.config["GITHUB_API_BASE"])
+                               app.config["GITHUB_API_BASE"])
 
     return base_url + url
 
@@ -48,18 +48,18 @@ def get_session_for_repo(app, repo_config):
     if session is None:
         session = requests.Session()
         session.verify = repo_config.get("github_verify",
-            app.config["GITHUB_VERIFY"])
+                                         app.config["GITHUB_VERIFY"])
 
         token = repo_config.get("github_token",
-            app.config.get("GITHUB_TOKEN"))
+                                app.config.get("GITHUB_TOKEN"))
 
         if token:
             session.headers = {"Authorization": "token " + token}
         else:
             user = repo_config.get("github_user",
-                app.config.get("GITHUB_USER"))
+                                   app.config.get("GITHUB_USER"))
             password = repo_config.get("github_password",
-                app.config.get("GITHUB_PASSWORD"))
+                                       app.config.get("GITHUB_PASSWORD"))
             session.auth = (user, password)
     return session
 
@@ -107,7 +107,7 @@ def get_commits(app, repo_config, pull_request):
 
         if build_commits == BUILD_COMMITS_NEW:
             commits = [sha for sha in commits if not
-                has_status(app, repo_config, base_repo_name, sha)]
+                       has_status(app, repo_config, base_repo_name, sha)]
 
         return head_repo_name, commits
     elif build_commits == BUILD_COMMITS_LAST:
@@ -169,9 +169,9 @@ def has_status(app, repo_config, repo_name, sha):
 def register_github_hooks(app):
     with app.app_context():
         github_endpoint = "http://%s%s" % (
-                app.config.get("GITHUB_NOTIFICATION_SERVER_NAME",
-                               app.config["SERVER_NAME"]),
-                url_for("base.github_notification", _external=False))
+            app.config.get("GITHUB_NOTIFICATION_SERVER_NAME",
+                           app.config["SERVER_NAME"]),
+            url_for("base.github_notification", _external=False))
 
     for repo_config in app.config["REPOSITORIES"]:
         repo_name = repo_config["github_repo"]
@@ -201,7 +201,7 @@ def register_github_hooks(app):
             params = {"name": "web",
                       "config": {"url": github_endpoint,
                                  "content_type": "json"},
-                       "events": ["pull_request"]}
+                      "events": ["pull_request"]}
             headers = {"Content-Type": "application/json"}
 
             response = s.post(url, data=json.dumps(params), headers=headers)
@@ -224,4 +224,3 @@ def get_pull_requests(app, repo_config):
     """
     response = get_api_response(app, repo_config, "/repos/{repo_name}/pulls")
     return (item for item in response.json)
-
