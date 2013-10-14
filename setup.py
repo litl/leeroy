@@ -10,12 +10,6 @@ def get_requirements():
     with open(os.path.join(basedir, 'requirements.txt')) as f:
         return [l.strip() for l in f]
 
-
-if sys.argv[-1] == 'test':
-    status = os.system('./virtualenv-run.sh flake8 leeroy/*.py')
-    sys.exit(status)
-
-
 setup(
     name="leeroy",
     version=VERSION,
@@ -34,6 +28,7 @@ leeroy=leeroy.scripts:main
 leeroy-cron=leeroy.cron:main
     """,
     packages=["leeroy"],
+    setup_requires=['flake8'],
     classifiers=[
         # From http://pypi.python.org/pypi?%3Aaction=list_classifiers
         "Development Status :: 4 - Beta",

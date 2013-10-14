@@ -158,7 +158,7 @@ Contributions are welcome!  Here's the best way to do that:
 forget to update the AUTHORS.md file!
 3. Submit a pull request
 
-Please make sure that `python setup.py test` does not return any PEP-8 or
+Please make sure that `python setup.py flake8` does not return any PEP-8 or
 pyflakes errors before submitting your pull request.
 
 ## FAQ
