@@ -1,6 +1,7 @@
 import logging
 import time
 import datetime
+from leeroy import github
 from leeroy.app import app
 from leeroy.github import get_pull_requests, get_status
 from leeroy.jenkins import schedule_build
@@ -31,8 +32,8 @@ def retry_jenkins(repo_config, pull_request):
     html_url = pull_request["html_url"]
     sha = pull_request['head']['sha']
     log.debug("Creating a new Jenkins job for {}".format(pr_number))
-    repo_name = repo_config['github_repo']
-    schedule_build(app, repo_config, repo_name, sha, html_url)
+    head_repo_name, shas = github.get_commits(app, repo_config, pull_request)
+    schedule_build(app, repo_config, head_repo_name, sha, html_url)
 
 
 def main():
