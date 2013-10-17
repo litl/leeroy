@@ -149,6 +149,16 @@ cron-task:
 
 You can add it to your crontab to run at whatever interval suits you.
 
+## Commandline tool to (re)try pull requests
+
+Sometimes you want to replay a pull-request job.  Maybe the status failed
+eratically.  Maybe you don't have the Jenkins Rebuild plugin.  Whatever your
+reason you can try:
+
+    $ leeroy-retry foo/bar 1234
+
+And leeroy will re-test pull request 1234 in the foo/bar
+
 ## Contribution
 
 Contributions are welcome!  Here's the best way to do that:

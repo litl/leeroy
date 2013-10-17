@@ -26,6 +26,7 @@ setup(
 [console_scripts]
 leeroy=leeroy.scripts:main
 leeroy-cron=leeroy.cron:main
+leeroy-retry=leeroy.retry:main
     """,
     packages=["leeroy"],
     setup_requires=['flake8'],
