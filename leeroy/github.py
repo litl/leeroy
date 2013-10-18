@@ -214,13 +214,25 @@ def register_github_hooks(app):
                               repo_name, response.status_code)
 
 
+def get_pull_request(app, repo_config, pull_request):
+    """Data for a given pull request.
+
+    :param app: Flask app
+    :param repo_config: dict with ``github_repo`` key
+    :param pull_request: the pull request number
+    """
+    response = get_api_response(
+        app, repo_config, "/repos/{{repo_name}}/pulls/{}".format(pull_request))
+    return response.json
+
+
 def get_pull_requests(app, repo_config):
-    """Iterator of last 30 pull requests from a repository.
+    """Last 30 pull requests from a repository.
 
     :param app: Flask app
     :param repo_config: dict with ``github_repo`` key
 
-    :yields: id for a pull request
+    :returns: id for a pull request
     """
     response = get_api_response(app, repo_config, "/repos/{repo_name}/pulls")
     return (item for item in response.json)

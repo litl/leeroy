@@ -2,7 +2,7 @@ import os
 import sys
 from setuptools import setup, find_packages
 
-VERSION = "0.1.5"
+VERSION = "0.2.0"
 
 
 def get_requirements():
@@ -26,6 +26,7 @@ setup(
 [console_scripts]
 leeroy=leeroy.scripts:main
 leeroy-cron=leeroy.cron:main
+leeroy-retry=leeroy.retry:main
     """,
     packages=["leeroy"],
     setup_requires=['flake8'],
