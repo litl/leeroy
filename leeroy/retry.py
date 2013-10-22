@@ -17,7 +17,7 @@ def main():
     parser.add_argument('pull_request', type=int)
     args = parser.parse_args()
 
-    log.info("Scheduling a build for PR {}".format(args.pull_request))
+    log.info("Scheduling a build for PR {0}".format(args.pull_request))
     repo_config = github.get_repo_config(app, args.repo)
     pull_request = github.get_pull_request(app, repo_config, args.pull_request)
     head_repo_name, shas = github.get_commits(app, repo_config, pull_request)
