@@ -31,7 +31,7 @@ def retry_jenkins(repo_config, pull_request):
     pr_number = pull_request['number']
     html_url = pull_request["html_url"]
     sha = pull_request['head']['sha']
-    log.debug("Creating a new Jenkins job for {}".format(pr_number))
+    log.debug("Creating a new Jenkins job for {0}".format(pr_number))
     head_repo_name, shas = github.get_commits(app, repo_config, pull_request)
     schedule_build(app, repo_config, head_repo_name, sha, html_url)
 
