@@ -222,7 +222,8 @@ def get_pull_request(app, repo_config, pull_request):
     :param pull_request: the pull request number
     """
     response = get_api_response(
-        app, repo_config, "/repos/{{repo_name}}/pulls/{0}".format(pull_request))
+        app, repo_config,
+        "/repos/{{repo_name}}/pulls/{0}".format(pull_request))
     return response.json
 
 
