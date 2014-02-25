@@ -3,7 +3,7 @@
 import logging
 
 from flask import Blueprint, current_app, json, request, Response, abort
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import BadRequest, NotFound
 
 from . import github, jenkins
 
@@ -93,6 +93,18 @@ def jenkins_notification():
 
 @base.route("/notification/github", methods=["POST"])
 def github_notification():
+    event_type = request.headers.get("X-GitHub-Event")
+    if event_type is None:
+        msg = "Got GitHub notification without a type"
+        logging.warn(msg)
+        return BadRequest(msg)
+    elif event_type == "ping":
+        return Response(status=200)
+    elif event_type != "pull_request":
+        msg = "Got unknown GitHub notification event type: %s" % (event_type,)
+        logging.warn(msg)
+        return BadRequest(msg)
+
     action = request.json["action"]
     pull_request = request.json["pull_request"]
     number = pull_request["number"]
