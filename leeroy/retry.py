@@ -21,9 +21,9 @@ def main():
     repo_config = github.get_repo_config(app, args.repo)
     pull_request = github.get_pull_request(app, repo_config, args.pull_request)
     head_repo_name, shas = github.get_commits(app, repo_config, pull_request)
-    sha = pull_request['head']['sha']
     html_url = pull_request["html_url"]
-    schedule_build(app, repo_config, head_repo_name, sha, html_url)
+    for sha in shas:
+        schedule_build(app, repo_config, head_repo_name, sha, html_url)
 
 if __name__ == '__main__':
     main()
