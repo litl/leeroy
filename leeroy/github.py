@@ -124,7 +124,8 @@ def update_status(app, repo_config, repo_name, sha, state, desc,
         sha=sha)
 
     params = dict(state=state,
-                  description=desc)
+                  description=desc,
+                  context="leeroy/jenkins")
 
     if target_url:
         params["target_url"] = target_url
