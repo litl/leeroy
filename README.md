@@ -28,7 +28,6 @@ set the `LEEROY_CONFIG` environment variable to point to that file.  It
 should look something like:
 
 ```python
-
 DEBUG = True
 LOGGING_CONF = "logging.conf"
 LOGGER_NAME = "leeroy"
@@ -40,6 +39,7 @@ SERVER_NAME = "leeroy.example.com"
 # notification to. It can be different from SERVER_NAME when another server is
 # proxying requests to leeroy.  Falls back to SERVER_NAME if not provided.
 # GITHUB_NOTIFICATION_SERVER_NAME = "leeroy.example.com"
+# GITHUB_NOTIFICATION_SERVER_SCHEME = "http"
 
 # GitHub configuration
 # The base URL for GitHub's API. If using GitHub Enterprise, change this to
@@ -56,19 +56,26 @@ GITHUB_TOKEN = ""
 # GITHUB_USER = "octocat"
 # GITHUB_PASSWORD = ""
 
+# GitHub build context
+GITHUB_CONTEXT = "leeroy/jenkins"
+
 # Jenkins configuration
 # JENKINS_USER and JENKINS_PASSWORD assume you're using basic HTTP
 # authentication, not Jenkins's built in auth system.
+# JENKINS_BUILD_TOKEN can be used with the "Trigger builds remotely"
+# build trigger configuration
 JENKINS_URL = "https://jenkins.example.com"
-JENKINS_USER = "hudson"
+JENKINS_USER = ""
 JENKINS_PASSWORD = ""
+JENKINS_BUILD_TOKEN = None
 
 # Whether a Jenkins job is created for each commit in a pull request,
 # or only one for the last one.
 # What commits to build in a pull request. There are three options:
 # 'ALL': build all commits in the pull request.
 # 'LAST': build only the last commit in the pull request.
-# 'NEW': build only commits that don't already have a commit status set. (default)
+# 'NEW': build only commits that don't already have a commit status set.
+#        (default)
 BUILD_COMMITS = 'NEW'
 
 # A list of dicts containing configuration for each GitHub repository &
@@ -82,9 +89,11 @@ BUILD_COMMITS = 'NEW'
 #  "github_token": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
 #  "github_user": "litl",
 #  "github_password": "password",
+#  "github_context": "leeroy",
 #  "jenkins_url": ""https://jenkins2.example.com"",
 #  "jenkins_user": "litl",
 #  "jenkins_password": "password",
+#  "jenkins_build_token": "abc123",
 #  "build_commits": "LAST"}
 #
 # github_api_base, github_token, github_user, github_password, jenkins_url,
@@ -123,7 +132,7 @@ and `master` for `GIT_SHA1` are a good idea, but not required.
 
 After configuring your service, you can start Leeroy:
 
-    $ leeroy
+    $ uwsgi uwsgi.ini
 
 Ensure that the GitHub hook has been installed by visiting
 `https://github.com/<user>/<repo>/admin/hooks` for your project, or by
@@ -135,9 +144,7 @@ Soon after that, you should see a "pending" status on the pull request
 in GitHub.  Once the build finishes, you should see either a "success"
 or "failure" status on your pull request.  Congratulations!
 
-If you want to run Leeroy in a more production-ready environment then any
-WSGI app server should work.  We are fans of
-[uwsgi](http://projects.unbit.it/uwsgi/).
+A `Procfile` is included so you can easily run Leeroy on Heroku.
 
 ## Cron task to fix missing statuses
 

@@ -1,0 +1,1 @@
+web: uwsgi uwsgi.init
