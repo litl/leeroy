@@ -9,6 +9,7 @@ SERVER_NAME = "leeroy.example.com"
 # notification to. It can be different from SERVER_NAME when another server is
 # proxying requests to leeroy.  Falls back to SERVER_NAME if not provided.
 # GITHUB_NOTIFICATION_SERVER_NAME = "leeroy.example.com"
+# GITHUB_NOTIFICATION_SERVER_SCHEME = "http"
 
 # GitHub configuration
 # The base URL for GitHub's API. If using GitHub Enterprise, change this to

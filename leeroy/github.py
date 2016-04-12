@@ -173,7 +173,9 @@ def has_status(app, repo_config, repo_name, sha):
 
 def register_github_hooks(app):
     with app.app_context():
-        github_endpoint = "http://%s%s" % (
+        github_endpoint = "%s://%s%s" % (
+            app.config.get("GITHUB_NOTIFICATION_SERVER_SCHEME",
+                           "http"),
             app.config.get("GITHUB_NOTIFICATION_SERVER_NAME",
                            app.config["SERVER_NAME"]),
             url_for("base.github_notification", _external=False))
