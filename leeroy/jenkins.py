@@ -3,8 +3,17 @@
 import logging
 import requests
 
-build_path = "/job/{job_name}/buildWithParameters"\
+
+normal_build_path = "/job/{job_name}/buildWithParameters"\
     "?GIT_BASE_REPO={git_base_repo}" \
+    "&GIT_HEAD_REPO={git_head_repo}" \
+    "&GIT_SHA1={git_sha1}" \
+    "&GITHUB_URL={github_url}"
+
+
+auth_token_root_build_path = "/buildByToken/buildWithParameters" \
+    "?job={job_name}" \
+    "&GIT_BASE_REPO={git_base_repo}" \
     "&GIT_HEAD_REPO={git_head_repo}" \
     "&GIT_SHA1={git_sha1}" \
     "&GITHUB_URL={github_url}"
@@ -29,6 +38,11 @@ def get_jenkins_url(app, repo_config):
 def schedule_build(app, repo_config, head_repo_name, sha, html_url):
     base_repo_name = repo_config["github_repo"]
     job_name = repo_config["jenkins_job_name"]
+
+    if app.config.get("JENKINS_AUTH_TOKEN_ROOT_BUILD"):
+        build_path = auth_token_root_build_path
+    else:
+        build_path = normal_build_path
 
     url = get_jenkins_url(app, repo_config) + \
         build_path.format(job_name=job_name,

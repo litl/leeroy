@@ -39,6 +39,11 @@ JENKINS_USER = ""
 JENKINS_PASSWORD = ""
 JENKINS_BUILD_TOKEN = None
 
+# Use the Build Authorization Token Root Plugin's alternative URL for
+# triggering builds.  Handy when using build tokens and no
+# authentication.
+JENKINS_AUTH_TOKEN_ROOT_BUILD = False
+
 # Whether a Jenkins job is created for each commit in a pull request,
 # or only one for the last one.
 # What commits to build in a pull request. There are three options:
