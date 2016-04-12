@@ -28,9 +28,12 @@ GITHUB_TOKEN = ""
 # Jenkins configuration
 # JENKINS_USER and JENKINS_PASSWORD assume you're using basic HTTP
 # authentication, not Jenkins's built in auth system.
+# JENKINS_BUILD_TOKEN can be used with the "Trigger builds remotely"
+# build trigger configuration
 JENKINS_URL = "https://jenkins.example.com"
-JENKINS_USER = "hudson"
+JENKINS_USER = ""
 JENKINS_PASSWORD = ""
+JENKINS_BUILD_TOKEN = None
 
 # Whether a Jenkins job is created for each commit in a pull request,
 # or only one for the last one.
@@ -55,6 +58,7 @@ BUILD_COMMITS = 'NEW'
 #  "jenkins_url": ""https://jenkins2.example.com"",
 #  "jenkins_user": "litl",
 #  "jenkins_password": "password",
+#  "jenkins_build_token": "abc123",
 #  "build_commits": "LAST"}
 #
 # github_api_base, github_token, github_user, github_password, jenkins_url,

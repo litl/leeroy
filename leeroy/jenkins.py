@@ -16,6 +16,9 @@ def get_jenkins_auth(app, repo_config):
     password = repo_config.get("jenkins_password",
                                app.config["JENKINS_PASSWORD"])
 
+    if not user:
+        return None
+
     return user, password
 
 
@@ -33,6 +36,11 @@ def schedule_build(app, repo_config, head_repo_name, sha, html_url):
                           git_head_repo=head_repo_name,
                           git_sha1=sha,
                           github_url=html_url)
+
+    build_token = repo_config.get("jenkins_build_token",
+                                  app.config.get("JENKINS_BUILD_TOKEN"))
+    if build_token is not None:
+        url += "&token=" + build_token
 
     logging.debug("Requesting build from Jenkins: %s", url)
     response = requests.post(url, auth=get_jenkins_auth(app, repo_config))
