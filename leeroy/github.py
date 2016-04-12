@@ -124,8 +124,12 @@ def update_status(app, repo_config, repo_name, sha, state, desc,
         sha=sha)
 
     params = dict(state=state,
-                  description=desc,
-                  context="leeroy/jenkins")
+                  description=desc)
+
+    context = repo_config.get("github_context",
+                              app.config.get("GITHUB_CONTEXT"))
+    if context:
+        params["context"] = context
 
     if target_url:
         params["target_url"] = target_url

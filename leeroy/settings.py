@@ -25,6 +25,9 @@ GITHUB_TOKEN = ""
 # GITHUB_USER = "octocat"
 # GITHUB_PASSWORD = ""
 
+# GitHub build context
+GITHUB_CONTEXT = "leeroy/jenkins"
+
 # Jenkins configuration
 # JENKINS_USER and JENKINS_PASSWORD assume you're using basic HTTP
 # authentication, not Jenkins's built in auth system.
@@ -55,6 +58,7 @@ BUILD_COMMITS = 'NEW'
 #  "github_token": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
 #  "github_user": "litl",
 #  "github_password": "password",
+#  "github_context": "leeroy",
 #  "jenkins_url": ""https://jenkins2.example.com"",
 #  "jenkins_user": "litl",
 #  "jenkins_password": "password",
