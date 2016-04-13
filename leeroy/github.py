@@ -18,6 +18,10 @@ BUILD_COMMITS_ALL = "ALL"
 BUILD_COMMITS_LAST = "LAST"
 BUILD_COMMITS_NEW = "NEW"
 
+BUILD_COMMITS_OPTIONS = [BUILD_COMMITS_ALL,
+                         BUILD_COMMITS_LAST,
+                         BUILD_COMMITS_NEW]
+
 
 def get_api_url(app, repo_config, url):
     base_url = repo_config.get("github_api_base",
@@ -88,10 +92,11 @@ def get_build_commits(app, repo_config):
     return build_commits
 
 
-def get_commits(app, repo_config, pull_request):
+def get_commits(app, repo_config, pull_request, build_commits=None):
     head_repo_name = get_repo_name(pull_request, "head")
     base_repo_name = get_repo_name(pull_request, "base")
-    build_commits = get_build_commits(app, repo_config)
+    if build_commits is None:
+        build_commits = get_build_commits(app, repo_config)
 
     if build_commits in (BUILD_COMMITS_ALL, BUILD_COMMITS_NEW):
         number = pull_request["number"]
