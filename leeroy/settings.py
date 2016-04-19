@@ -21,6 +21,12 @@ GITHUB_API_BASE = "https://api.github.com"
 # Enterprise with a self signed certificate.
 GITHUB_VERIFY = True
 
+# Verify SSL certificate for Jenkins server. Always set this to True unless
+# using Jenkins with a self signed certificate. Optionally use a path
+# to the Jenkins CA bundle.
+# JENKINS_VERIFY = "/etc/nginx/ssl/"
+JENKINS_VERIFY = True
+
 # Create and use a GitHub API token or supply a user and password.
 GITHUB_TOKEN = ""
 # GITHUB_USER = "octocat"
