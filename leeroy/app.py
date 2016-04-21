@@ -27,4 +27,5 @@ if logger_name:
 
 app.register_blueprint(base)
 
-register_github_hooks(app)
+if app.config.get("GITHUB_REGISTER_REPO_HOOKS", True):
+    register_github_hooks(app)

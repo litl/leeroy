@@ -35,6 +35,9 @@ GITHUB_TOKEN = ""
 # GitHub build context
 GITHUB_CONTEXT = "leeroy/jenkins"
 
+# Register per-repo webhooks.  Defaults to true
+GITHUB_REGISTER_REPO_HOOKS = True
+
 # Jenkins configuration
 # JENKINS_USER and JENKINS_PASSWORD assume you're using basic HTTP
 # authentication, not Jenkins's built in auth system.
