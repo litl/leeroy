@@ -107,6 +107,8 @@ def get_commits(app, repo_config, pull_request, build_commits=None):
 
         s = get_session_for_repo(app, repo_config)
         response = s.get(url)
+        if not response.ok:
+            raise Exception("Unable to get commits: {}".format(response.status_code))
 
         commits = [c["sha"] for c in response.json]
 
@@ -144,7 +146,10 @@ def update_status(app, repo_config, repo_name, sha, state, desc,
     logging.debug("Setting status on %s %s to %s", repo_name, sha, state)
 
     s = get_session_for_repo(app, repo_config)
-    s.post(url, data=json.dumps(params), headers=headers)
+    response = s.post(url, data=json.dumps(params), headers=headers)
+    if not response.ok:
+        logging.error("Unable to set status on %s %s to %s",
+                      repo_name, sha, state)
 
 
 def get_status(app, repo_config, repo_name, sha):
@@ -165,6 +170,8 @@ def get_status(app, repo_config, repo_name, sha):
     logging.debug("Getting status for %s %s", repo_name, sha)
     s = get_session_for_repo(app, repo_config)
     response = s.get(url)
+    if not response.ok:
+        raise Exception("Unable to get status: {}".format(response.status_code))
     return response
 
 
@@ -236,6 +243,8 @@ def get_pull_request(app, repo_config, pull_request):
     response = get_api_response(
         app, repo_config,
         "/repos/{{repo_name}}/pulls/{0}".format(pull_request))
+    if not response.ok:
+        raise Exception("Unable to get pull request: status code {}".format(response.status_code))
     return response.json
 
 
@@ -248,4 +257,6 @@ def get_pull_requests(app, repo_config):
     :returns: id for a pull request
     """
     response = get_api_response(app, repo_config, "/repos/{repo_name}/pulls")
+    if not response.ok:
+        raise Exception("Unable to get pull requests: status code {}".format(response.status_code))
     return (item for item in response.json)
