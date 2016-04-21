@@ -143,10 +143,24 @@ def github_notification():
                              "Jenkins build is being scheduled")
 
         logging.debug("Scheduling build for %s %s", head_repo_name, sha)
-        jenkins.schedule_build(current_app,
-                               repo_config,
-                               head_repo_name,
-                               sha,
-                               html_url)
+        ok = jenkins.schedule_build(current_app,
+                                    repo_config,
+                                    head_repo_name,
+                                    sha,
+                                    html_url)
+
+        if ok:
+            github_state = "pending"
+            github_desc = "Jenkins build has been queued"
+        else:
+            github_state = "error"
+            github_desc = "Scheduling Jenkins job failed"
+
+        github.update_status(current_app,
+                             repo_config,
+                             base_repo_name,
+                             sha,
+                             github_state,
+                             github_desc)
 
     return Response(status=204)

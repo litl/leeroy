@@ -61,3 +61,4 @@ def schedule_build(app, repo_config, head_repo_name, sha, html_url):
                              verify=app.config["JENKINS_VERIFY"])
     logging.debug("Jenkins responded with status code %s",
                   response.status_code)
+    return response.ok
