@@ -8,7 +8,7 @@ import warnings
 
 github_status_url = "/repos/{repo_name}/statuses/{sha}"
 github_hooks_url = "/repos/{repo_name}/hooks"
-github_commits_url = "/repos/{repo_name}/pulls/{number}/commits"
+github_commits_url = "/repos/{repo_name}/pulls/{number}/commits?per_page=100"
 
 # Use requests.Session() objects keyed by github_repo to handle GitHub API
 # authentication details (token vs user/pass) and SSL trust options.
@@ -103,8 +103,7 @@ def get_commits(app, repo_config, pull_request, build_commits=None):
 
         url = get_api_url(app, repo_config, github_commits_url).format(
             repo_name=base_repo_name,
-            number=number,
-            per_page=100)
+            number=number)
 
         s = get_session_for_repo(app, repo_config)
         response = s.get(url)
