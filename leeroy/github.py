@@ -103,7 +103,8 @@ def get_commits(app, repo_config, pull_request, build_commits=None):
 
         url = get_api_url(app, repo_config, github_commits_url).format(
             repo_name=base_repo_name,
-            number=number)
+            number=number,
+            per_page=100)
 
         s = get_session_for_repo(app, repo_config)
         response = s.get(url)
