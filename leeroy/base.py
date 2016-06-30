@@ -1,6 +1,6 @@
 # Copyright 2012 litl, LLC.  Licensed under the MIT license.
 
-import logging
+import logging, time
 
 from flask import Blueprint, current_app, json, request, Response, abort
 from werkzeug.exceptions import BadRequest, NotFound
@@ -126,9 +126,24 @@ def github_notification():
         logging.warn(err_msg)
         raise NotFound(err_msg)
 
-    head_repo_name, shas = github.get_commits(current_app,
-                                              repo_config,
-                                              pull_request)
+    # There is a race condition in the GitHub API in which requesting
+    # the commits for a pull request can return a 404.  Try a few
+    # times and back off if we get an error.
+    tries_left = 5
+    while True:
+        tries_left -= 1
+        try:
+            head_repo_name, shas = github.get_commits(current_app,
+                                                      repo_config,
+                                                      pull_request)
+            break
+        except Exception, e:
+            if tries_left == 0:
+                raise
+
+            logging.debug("Got exception fetching commits (tries left: %d): %s",
+                          tries_left, e)
+            time.sleep(5 - tries_left)
 
     logging.debug("Trigging builds for %d commits", len(shas))
 
