@@ -2,7 +2,7 @@ import os
 import sys
 from setuptools import setup, find_packages
 
-VERSION = "0.2.2"
+VERSION = "0.3.0"
 
 
 def get_requirements():
