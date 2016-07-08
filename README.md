@@ -27,6 +27,7 @@ You may either edit the `leeroy/settings.py` file or create a new file and
 set the `LEEROY_CONFIG` environment variable to point to that file.  It
 should look something like:
 
+[embedmd]:# (leeroy/settings.py python)
 ```python
 DEBUG = True
 LOGGING_CONF = "logging.conf"
@@ -51,6 +52,12 @@ GITHUB_API_BASE = "https://api.github.com"
 # Enterprise with a self signed certificate.
 GITHUB_VERIFY = True
 
+# Verify SSL certificate for Jenkins server. Always set this to True unless
+# using Jenkins with a self signed certificate. Optionally use a path
+# to the Jenkins CA bundle.
+# JENKINS_VERIFY = "/etc/nginx/ssl/"
+JENKINS_VERIFY = True
+
 # Create and use a GitHub API token or supply a user and password.
 GITHUB_TOKEN = ""
 # GITHUB_USER = "octocat"
@@ -58,6 +65,9 @@ GITHUB_TOKEN = ""
 
 # GitHub build context
 GITHUB_CONTEXT = "leeroy/jenkins"
+
+# Register per-repo webhooks.  Defaults to true
+GITHUB_REGISTER_REPO_HOOKS = True
 
 # Jenkins configuration
 # JENKINS_USER and JENKINS_PASSWORD assume you're using basic HTTP
@@ -68,6 +78,11 @@ JENKINS_URL = "https://jenkins.example.com"
 JENKINS_USER = ""
 JENKINS_PASSWORD = ""
 JENKINS_BUILD_TOKEN = None
+
+# Use the Build Authorization Token Root Plugin's alternative URL for
+# triggering builds.  Handy when using build tokens and no
+# authentication.
+JENKINS_AUTH_TOKEN_ROOT_BUILD = False
 
 # Whether a Jenkins job is created for each commit in a pull request,
 # or only one for the last one.
