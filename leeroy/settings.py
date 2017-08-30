@@ -3,7 +3,10 @@ LOGGING_CONF = "logging.conf"
 LOGGER_NAME = "leeroy"
 
 # The hostname (and :port, if necessary) of this server
-SERVER_NAME = "leeroy.example.com"
+# Setting this will limit responses to only those requested
+# against the specified server name. Leaving it unset will
+# cause Leeroy to respond to all requests
+#SERVER_NAME = "leeroy.example.com"
 
 # The hostname (and :port, if necessary) of the server GitHub should send
 # notification to. It can be different from SERVER_NAME when another server is

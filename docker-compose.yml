@@ -1,0 +1,7 @@
+version: '2'
+services:
+  scout-leeroy:
+    image: "litl/leeroy:latest"
+    ports:
+      - "8008:80"
+    restart: always
